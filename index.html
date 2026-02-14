@@ -49,7 +49,7 @@ h1 {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    overflow: hidden; /* يضمن عدم ظهور الرسالة مبكرًا */
+    overflow: hidden; /* يضمن عدم ظهور الرسالة قبل الفتح */
 }
 
 .flap {
@@ -57,7 +57,7 @@ h1 {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60%; /* flap أكبر الآن */
+    height: 60%; /* flap أكبر */
     background: #ff2e63;
     clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
@@ -69,17 +69,18 @@ h1 {
 .letter {
     position: absolute;
     top: 100%; /* مخفية بالكامل قبل الفتح */
-    left: 5%;
-    width: 90%;
-    height: 40%; /* أقل من flap */
+    left: 0%;
+    width: 100%;
+    height: 100%; /* تغطي كامل الظرف */
     background: white;
     color: #ff2e63;
-    padding: 15px;
+    padding: 20px; /* مساحة للخط */
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     transition: top 1s ease;
     z-index: 1;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .envelope.open .flap {
@@ -87,7 +88,7 @@ h1 {
 }
 
 .envelope.open .letter {
-    top: 10%; /* تظهر تدريجيًا بعد الفتح */
+    top: 0; /* تظهر لتغطي كامل الظرف */
 }
 
 /* Slideshow */
