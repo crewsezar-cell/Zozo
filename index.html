@@ -41,6 +41,7 @@ h1 {
     cursor: pointer;
     perspective: 1000px;
     position: relative;
+    display: inline-block;
 }
 
 .envelope {
@@ -48,7 +49,7 @@ h1 {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    overflow: hidden; /* مهم لإخفاء الرسالة قبل الفتح */
+    overflow: hidden; /* يضمن عدم ظهور الرسالة مبكرًا */
 }
 
 .flap {
@@ -56,7 +57,7 @@ h1 {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 60%; /* flap أكبر الآن */
     background: #ff2e63;
     clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
@@ -70,7 +71,7 @@ h1 {
     top: 100%; /* مخفية بالكامل قبل الفتح */
     left: 5%;
     width: 90%;
-    height: 45%;
+    height: 40%; /* أقل من flap */
     background: white;
     color: #ff2e63;
     padding: 15px;
@@ -174,25 +175,26 @@ h1 {
 
 <script>
 function openLetter() {
+    const wrapper = document.querySelector(".envelope-wrapper");
     const envelope = document.getElementById("envelope");
     const music = document.getElementById("bgMusic");
 
-    // Disable clicking during shake
-    envelope.parentNode.style.pointerEvents = "none";
+    // Disable click during shake
+    wrapper.style.pointerEvents = "none";
 
-    // Shake animation
+    // Shake animation on wrapper
     const shakes = [5, -5, 3, -3, 0];
     shakes.forEach((deg, i) => {
         setTimeout(() => {
-            envelope.style.transform = `rotateZ(${deg}deg)`;
+            wrapper.style.transform = `rotateZ(${deg}deg)`;
         }, i * 100);
     });
 
-    // After shake, open flap
+    // Open flap after shake
     setTimeout(() => {
         envelope.classList.add("open");
-        envelope.style.transform = "rotateZ(0deg)";
-        envelope.parentNode.style.pointerEvents = "auto"; // re-enable click
+        wrapper.style.transform = "rotateZ(0deg)";
+        wrapper.style.pointerEvents = "auto";
     }, shakes.length * 100 + 50);
 
     // Gradual music
