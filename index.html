@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Beautiful Zozo ❤️</title>
+
 <style>
 body {
     margin: 0;
@@ -48,8 +49,10 @@ h1 {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
+    overflow: hidden; /* يمنع خروج أي عنصر */
 }
 
+/* Flap */
 .flap {
     position: absolute;
     top: 0;
@@ -59,38 +62,55 @@ h1 {
     background: #ff2e63;
     clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
-    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    z-index: 2;
+    transition: transform 1s ease;
+    z-index: 3;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
+/* Letter */
 .letter {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 5%;
     width: 90%;
-    height: 45%;
+    height: 180px;
     background: white;
     color: #ff2e63;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     transition: top 1s ease;
     z-index: 1;
-    font-size: 14px;
+    font-size: 15px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    direction: rtl;
+    text-align: right;
+    box-sizing: border-box;
 }
 
+/* Scrollbar styling */
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+.letter::-webkit-scrollbar-thumb {
+    background: #ff2e63;
+    border-radius: 10px;
+}
+
+/* Open Animation */
 .envelope.open .flap {
     transform: rotateX(-180deg);
 }
 
 .envelope.open .letter {
-    top: 10%;
+    top: -120px; /* يطلع لفوق بشكل رومانسي */
 }
 
 /* Slideshow */
 .slideshow {
-    margin-top: 50px;
+    margin-top: 100px;
 }
 
 .slideshow img {
@@ -125,43 +145,39 @@ h1 {
 
 <h1>To My Beautiful Wife ❤️</h1>
 
-<!-- Music -->
 <audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Envelope Love Letter -->
 <div class="envelope-wrapper" onclick="openLetter()">
     <div class="envelope" id="envelope">
         <div class="flap"></div>
+
         <div class="letter">
-            <p>
-                زوزو ❤️ هابي فلانتين دااااي يا أجمل حاجة حصلتلي في حياتي.
-                حبيت السنه دي اعملك حاجه مختلفه اعبربك بيها عن حبي ومش هيبقي الاخير الي اعبرلك كدا بطريقه مختلفه ،
-                بحبك وهفضل احبك ومعاكي لاخر العمر.
-                <br><br>
-                على قلبك أنا مش هحلّ ❤️  
-                عدّت علينا سنين اتخانقنا فيها كتير،
-                زعلنا وضحكنا، بس الأهم إننا لسه مع بعض،
-                ولسه مكملين، وهنكمل للآخر.
-                <br><br>
-                مش هسيبك... أنا ما صدقت لقيتك.
-                <br><br>
-                بحبك يا زوزو ❤️  
-                <br><br>
-                — محمد
-            </p>
+            زوزو ❤️ هابي فلانتين دااااي يا أجمل حاجة حصلتلي في حياتي.
+            حبيت السنة دي أعملك حاجة مختلفة أعبرلك بيها عن حبي،
+            ومش هيبقى الأخير اللي أعبرلك كده بطريقة مختلفة.
+            بحبك وهفضل أحبك ومعاكي لآخر العمر.
+            <br><br>
+            على قلبك أنا مش هحل ❤️  
+            عدّت علينا سنين اتخانقنا فيها كتير،
+            زعلنا وضحكنا، بس الأهم إننا لسه مع بعض،
+            ولسه مكملين وهنكمل للآخر.
+            <br><br>
+            مش هسيبك... أنا ما صدقت لقيتك.
+            <br><br>
+            بحبك يا زوزو ❤️  
+            <br><br>
+            — محمد
         </div>
     </div>
     <p style="margin-top:20px;">اضغطي على الظرف يا زوزو 💌</p>
 </div>
 
-<!-- Slideshow -->
 <div class="slideshow">
     <img id="slide" src="photo1.jpg">
 </div>
 
-<!-- Photo Gallery -->
 <div class="gallery">
     <img src="photo1.jpg">
     <img src="photo2.jpg">
@@ -176,38 +192,25 @@ function openLetter() {
     const envelope = document.getElementById("envelope");
     const music = document.getElementById("bgMusic");
 
-    // Disable clicking during shake
-    envelope.parentNode.style.pointerEvents = "none";
-
-    // Shake animation
-    const shakes = [5, -5, 3, -3, 0];
-    shakes.forEach((deg, i) => {
-        setTimeout(() => {
-            envelope.style.transform = `rotateZ(${deg}deg)`;
-        }, i * 100);
-    });
-
-    // After shake, open flap
-    setTimeout(() => {
+    if (!envelope.classList.contains("open")) {
         envelope.classList.add("open");
-        envelope.style.transform = "rotateZ(0deg)";
-        envelope.parentNode.style.pointerEvents = "auto"; // re-enable click
-    }, shakes.length * 100 + 50);
+    }
 
-    // Gradual music
     if (music.paused) {
         music.volume = 0;
         music.play();
         let vol = 0;
         const interval = setInterval(() => {
-            vol += 0.01;
-            if (vol >= 1) { vol = 1; clearInterval(interval); }
+            vol += 0.02;
+            if (vol >= 1) { 
+                vol = 1; 
+                clearInterval(interval); 
+            }
             music.volume = vol;
         }, 100);
     }
 }
 
-// Slideshow
 let images = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg","photo6.jpg"];
 let index = 0;
 setInterval(() => {
@@ -215,7 +218,6 @@ setInterval(() => {
     document.getElementById("slide").src = images[index];
 }, 3000);
 
-// Floating Hearts
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
