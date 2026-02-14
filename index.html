@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Beautiful Zozo ❤️</title>
-
 <style>
 body {
     margin: 0;
@@ -37,51 +36,54 @@ h1 {
 /* Envelope */
 .envelope-wrapper {
     margin: 60px auto;
-    width: 400px; /* كبرنا العرض */
+    width: 400px;
+    height: 250px;
     cursor: pointer;
+    perspective: 1000px;
     position: relative;
-    perspective: 1000px; /* مهم للـ 3D */
 }
 
 .envelope {
-    position: relative;
     width: 100%;
-    height: 250px; /* كبرنا الارتفاع */
-    background: #ff4e80;
-    border-radius: 10px;
-    overflow: hidden;
+    height: 100%;
+    position: relative;
     transform-style: preserve-3d;
 }
 
 .flap {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 50%; /* نصف ارتفاع الظرف */
     background: #ff2e63;
-    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
     transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 2;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .letter {
     position: absolute;
+    top: 50%;
+    left: 5%;
     width: 90%;
+    height: 45%;
     background: white;
     color: #ff2e63;
     padding: 15px;
-    top: 100%;
-    left: 5%;
     border-radius: 10px;
-    transition: top 1s ease;
-    font-size: 14px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transition: top 1s ease;
+    z-index: 1;
+    font-size: 14px;
 }
 
-/* Opened Envelope */
 .envelope.open .flap {
-    transform: rotateX(-180deg); /* الفلاب يفتح */
+    transform: rotateX(-180deg);
 }
+
 .envelope.open .letter {
     top: 10%;
 }
@@ -170,13 +172,26 @@ h1 {
 </div>
 
 <script>
-/* Envelope Function with Gradual Music */
+/* Envelope Function with Shake + Gradual Music */
 function openLetter() {
     const envelope = document.getElementById("envelope");
     const music = document.getElementById("bgMusic");
 
-    envelope.classList.toggle("open");
+    // Shake قبل الفتح
+    let shakes = [5, -5, 3, -3, 0]; 
+    shakes.forEach((deg, i) => {
+        setTimeout(() => {
+            envelope.style.transform = `rotateZ(${deg}deg)`;
+        }, i * 100);
+    });
 
+    // بعد آخر shake، افتح الظرف
+    setTimeout(() => {
+        envelope.classList.toggle("open");
+        envelope.style.transform = `rotateZ(0deg)`;
+    }, shakes.length * 100);
+
+    // تشغيل الموسيقى تدريجيًا
     if (music.paused) {
         music.volume = 0.0;
         music.play();
