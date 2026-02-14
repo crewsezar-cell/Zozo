@@ -40,6 +40,7 @@ h1 {
     width: 400px; /* كبرنا العرض */
     cursor: pointer;
     position: relative;
+    perspective: 1000px; /* مهم للـ 3D */
 }
 
 .envelope {
@@ -49,7 +50,7 @@ h1 {
     background: #ff4e80;
     border-radius: 10px;
     overflow: hidden;
-    perspective: 800px; /* 3D perspective */
+    transform-style: preserve-3d;
 }
 
 .flap {
@@ -60,7 +61,6 @@ h1 {
     clip-path: polygon(0 0, 50% 50%, 100% 0);
     transform-origin: top;
     transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    transform-style: preserve-3d; /* 3D effect */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
@@ -80,9 +80,8 @@ h1 {
 
 /* Opened Envelope */
 .envelope.open .flap {
-    transform: rotateX(-180deg); /* 3D flip */
+    transform: rotateX(-180deg); /* الفلاب يفتح */
 }
-
 .envelope.open .letter {
     top: 10%;
 }
@@ -171,16 +170,10 @@ h1 {
 </div>
 
 <script>
-
-/* Envelope Function with Shake & Gradual Music */
+/* Envelope Function with Gradual Music */
 function openLetter() {
     const envelope = document.getElementById("envelope");
     const music = document.getElementById("bgMusic");
-
-    // حركة shake سريعة قبل الفتح
-    envelope.style.transform = "rotateZ(5deg)";
-    setTimeout(() => { envelope.style.transform = "rotateZ(-5deg)"; }, 100);
-    setTimeout(() => { envelope.style.transform = "rotateZ(0deg)"; }, 200);
 
     envelope.classList.toggle("open");
 
@@ -202,4 +195,27 @@ function openLetter() {
 
 /* Slideshow */
 let images = ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"];
-let ind
+let index = 0;
+
+setInterval(() => {
+    index = (index + 1) % images.length;
+    document.getElementById("slide").src = images[index];
+}, 3000);
+
+/* Floating Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
