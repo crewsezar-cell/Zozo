@@ -55,7 +55,7 @@ h1 {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%; /* نصف ارتفاع الظرف */
+    height: 50%;
     background: #ff2e63;
     clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
@@ -172,52 +172,50 @@ h1 {
 </div>
 
 <script>
-/* Envelope Function with Shake + Gradual Music */
 function openLetter() {
     const envelope = document.getElementById("envelope");
     const music = document.getElementById("bgMusic");
 
-    // Shake قبل الفتح
-    let shakes = [5, -5, 3, -3, 0]; 
+    // Disable clicking during shake
+    envelope.parentNode.style.pointerEvents = "none";
+
+    // Shake animation
+    const shakes = [5, -5, 3, -3, 0];
     shakes.forEach((deg, i) => {
         setTimeout(() => {
             envelope.style.transform = `rotateZ(${deg}deg)`;
         }, i * 100);
     });
 
-    // بعد آخر shake، افتح الظرف
+    // After shake, open flap
     setTimeout(() => {
-        envelope.classList.toggle("open");
-        envelope.style.transform = `rotateZ(0deg)`;
-    }, shakes.length * 100);
+        envelope.classList.add("open");
+        envelope.style.transform = "rotateZ(0deg)";
+        envelope.parentNode.style.pointerEvents = "auto"; // re-enable click
+    }, shakes.length * 100 + 50);
 
-    // تشغيل الموسيقى تدريجيًا
+    // Gradual music
     if (music.paused) {
-        music.volume = 0.0;
+        music.volume = 0;
         music.play();
-
-        let vol = 0.0;
+        let vol = 0;
         const interval = setInterval(() => {
             vol += 0.01;
-            if (vol >= 1.0) {
-                vol = 1.0;
-                clearInterval(interval);
-            }
+            if (vol >= 1) { vol = 1; clearInterval(interval); }
             music.volume = vol;
         }, 100);
     }
 }
 
-/* Slideshow */
-let images = ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"];
+// Slideshow
+let images = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg","photo6.jpg"];
 let index = 0;
-
 setInterval(() => {
     index = (index + 1) % images.length;
     document.getElementById("slide").src = images[index];
 }, 3000);
 
-/* Floating Hearts */
+// Floating Hearts
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -225,10 +223,8 @@ function createHeart() {
     heart.style.left = Math.random() * window.innerWidth + "px";
     heart.style.fontSize = Math.random() * 20 + 10 + "px";
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 6000);
 }
-
 setInterval(createHeart, 300);
 </script>
 
